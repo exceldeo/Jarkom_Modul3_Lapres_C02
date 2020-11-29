@@ -32,7 +32,7 @@ xterm -T MADIUN -e linux ubd0=MADIUN,jarkom umid=MADIUN eth0=daemon,,,switch3 me
 
 ![bonus2](https://user-images.githubusercontent.com/52096462/100544474-6f595a80-3288-11eb-923a-72e75be5c69d.png)
 
-Lalu  jalankan `bash topo.sh` pada *putty* dan masukkan *username* dan *password* default. Pada router **SURABAYA** lakukan setting `sysctl` dengan mengetikkan perintah `nano /etc/sysctl.conf`, dan tambahkan `net.ipv4.conf.all.accept_source_route = 1`.
+Lalu  jalankan `bash topo.sh` pada *putty* dan masukkan *username* dan *password* default. Pada router **SURABAYA** lakukan setting `sysctl` dengan mengetikkan perintah `nano /etc/sysctl.conf`, dan aktifkan forwarding ipv4.
 
 ![1](https://user-images.githubusercontent.com/52096462/100542193-4bdbe300-327b-11eb-99d9-0acfe3607066.PNG)
 
