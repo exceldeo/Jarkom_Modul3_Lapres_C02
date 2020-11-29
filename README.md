@@ -263,8 +263,11 @@ Pada UML **TUBAN** buka file *dhcpd.conf* dengan mengetikkan `nano /etc/dhcp/dhc
 * 5 menit = `60 s * 5` = 300
 * 10 menit = `60 s * 10` = 600
 
-![27 tambahan](https://user-images.githubusercontent.com/52096462/100542227-59916880-327b-11eb-9bee-f7d1f14ca0a8.PNG)
 ![27](https://user-images.githubusercontent.com/52096462/100542228-5a29ff00-327b-11eb-93e1-efde92b92656.PNG)
+
+Untuk hasil log-nya
+
+![27 tambahan](https://user-images.githubusercontent.com/52096462/100542227-59916880-327b-11eb-9bee-f7d1f14ca0a8.PNG)
 
 ## Proxy (Soal 7 - 12)
 
