@@ -16,23 +16,23 @@ uml_switch -unix switch2 > /dev/null < /dev/null &
 uml_switch -unix switch3 > /dev/null < /dev/null &
 
 # Router
-xterm -T SURABAYA -e linux ubd0=SURABAYA,jarkom umid=SURABAYA eth0=tuntap,,,10.151.76.53 eth1=daemon,,,switch1 eth2=daemon,,,switch3 eth3=daemon,,,switch2 mem=256M &
+xterm -T SURABAYA -e linux ubd0=SURABAYA,jarkom umid=SURABAYA eth0=tuntap,,,10.151.76.13 eth1=daemon,,,switch1 eth2=daemon,,,switch3 eth3=daemon,,,switch2 mem=256M &
 
-# Server switch 2
+# Server
 xterm -T MALANG -e linux ubd0=MALANG,jarkom umid=MALANG eth0=daemon,,,switch2 mem=160M &
 xterm -T MOJOKERTO -e linux ubd0=MOJOKERTO,jarkom umid=MOJOKERTO eth0=daemon,,,switch2 mem=128M &
 xterm -T TUBAN -e linux ubd0=TUBAN,jarkom umid=TUBAN eth0=daemon,,,switch2 mem=128M &
 
-# Klien switch 1
+# Klien 
 xterm -T SIDOARJO -e linux ubd0=SIDOARJO,jarkom umid=SIDOARJO eth0=daemon,,,switch1 mem=64M &
 xterm -T GRESIK -e linux ubd0=GRESIK,jarkom umid=GRESIK eth0=daemon,,,switch1 mem=64M &
-
-# Klien switch 3
 xterm -T BANYUWANGI -e linux ubd0=BANYUWANGI,jarkom umid=BANYUWANGI eth0=daemon,,,switch3 mem=64M &
 xterm -T MADIUN -e linux ubd0=MADIUN,jarkom umid=MADIUN eth0=daemon,,,switch3 mem=64M &
 ```
 
-Lalu  jalankan `bash topo.sh` pada *putty* dan masukkan *username* dan *password* default. Pada router **SURABAYA** lakukan setting `sysctl` dengan mengetikkan perintah `nano /etc/sysctl.conf`, dan aktifkan forwarding ipv4.
+![bonus2](https://user-images.githubusercontent.com/52096462/100544474-6f595a80-3288-11eb-923a-72e75be5c69d.png)
+
+Lalu  jalankan `bash topo.sh` pada *putty* dan masukkan *username* dan *password* default. Pada router **SURABAYA** lakukan setting `sysctl` dengan mengetikkan perintah `nano /etc/sysctl.conf`, dan tambahkan `net.ipv4.conf.all.accept_source_route = 1`.
 
 ![1](https://user-images.githubusercontent.com/52096462/100542193-4bdbe300-327b-11eb-99d9-0acfe3607066.PNG)
 
@@ -523,4 +523,5 @@ Lalu coba periksa proxy yang telah diubah tersebut, contohnya dengan mengakses *
 
 atau lakukan `ping janganlupa-ta.c02.pw` pada *Command Prompt*
 
+![bonus](https://user-images.githubusercontent.com/52096462/100544472-6d8f9700-3288-11eb-84c3-67f099b6e432.png)
 
