@@ -345,7 +345,7 @@ Pada UML **MOJOKERTO** buat file konfigurasi dengan mengetikkan
 ```
 nano /etc/squid/acl.conf
 ```
-dan tambahkan (Pada gambar di bawah tertulis `TWA 10:00-18:00` karena keperluan demo)
+dan tambahkan
 
 ```
 acl AW1 time TW 13:00-18:00
@@ -359,12 +359,12 @@ Buka kembali file `squid.conf` dengan mengetikkan
 include /etc/squid/acl.conf
 
 http_port 8080
-http_access allow USERS KERTA
+http_access allow USERS AW1
 http_access deny all
 visible_hostname mojokerto
 ```
 
-Simpan file tersebut. Kemudian `service squid restart`. Lalu conba akses situs apapun, contoh `detik.com`, jika sesuai dengan jam yang ditentukan, maka situs `detik.com` akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
+Simpan file tersebut. Kemudian `service squid restart`. Lalu conba akses situs apapun, contoh `monta.if.its.ac.id`, jika sesuai dengan jam yang ditentukan, maka situs `detik.com` akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
 
 ![32](https://user-images.githubusercontent.com/52096462/100542236-5e561c80-327b-11eb-9a71-6da471f18e15.PNG)
 
@@ -390,37 +390,42 @@ Buka kembali file `squid.conf` dengan mengetikkan
 include /etc/squid/acl.conf
 
 http_port 8080
-http_access allow USERS BIMTA
+http_access allow USERS AW2
+http_access allow USERS AW3
 http_access deny all
 visible_hostname mojokerto
 ```
 
-Simpan file tersebut. Kemudian `service squid restart`. Lalu coba akses situs apapun, contoh `detik.com`, jika sesuai dengan jam yang ditentukan, maka situs `detik.com` akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
+Simpan file tersebut. Kemudian `service squid restart`. Lalu coba akses situs apapun, contoh `monta.if.its.ac.id`, jika sesuai dengan jam yang ditentukan, maka situs `detik.com` akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
 
 ![34](https://user-images.githubusercontent.com/52096462/100542240-62823a00-327b-11eb-84a1-f4a7f98a1c96.PNG)
 
 
 ## Soal 10
 
-Buka file `ban.acl` dengan mengetikkan
+Buka file `restrict-sites.acl` dengan mengetikkan
 
 ```
-nano /etc/squid/ban.acl
+nano /etc/squid/restrict-sites.acl
 ```
 
-Lalu tambahkan pada file tersebut `google.com`. hal ini dimaksudkan dengan soal yaitu jika *user* mengetikkan `google.com` maka akan me-*redirect* ke `monta.if.its.ac.id`.
+Lalu tambahkan pada file tersebut `google.com`. hal ini dimaksudkan dengan soal yaitu jika *user* mengetikkan `http://google.com` maka akan ter-*redirect* ke `monta.if.its.ac.id`.
 
 ![35](https://user-images.githubusercontent.com/52096462/100542241-6615c100-327b-11eb-930f-fc5f34feff0a.PNG)
 
 Buka file `squid.conf` dengan mengetikkan `nano /etc/squid/squid.conf`, dan tambahkan script berikut:
 
 ```
-acl NOO url_regex "/etc/squid/ban.acl"
-deny_info http://monta.if.its.ac.id/ NOO
-http_access deny NOO
+acl BLACKLISTS dstdomain "/etc/squid/restrict-sites.acl"
+deny_info http://monta.if.its.ac.id/ BLACKLISTS
+http_access deny BLACKLISTS
+http_access allow AW1 USERS !BLACKLISTS
+http_access allow AW2 USERS !BLACKLISTS
+http_access allow AW3 USERS !BLACKLISTS
+http_access deny all
 ```
 
-Restart squid `service squid restart`, lalu masukkan `google.com` pada search bar, maka akan teralihkan ke `monta.if.its.ac.id`. (Berlaku jika sesuai dengan jam yang telah ditetapkan).
+Restart squid `service squid restart`, lalu masukkan `http://google.com` pada search bar, maka akan teralihkan ke `monta.if.its.ac.id`. (Berlaku jika sesuai dengan jam yang telah ditetapkan).
 
 ![36](https://user-images.githubusercontent.com/52096462/100542243-66ae5780-327b-11eb-9ad9-6cd4a2254811.PNG)
 
@@ -437,28 +442,21 @@ rm ERR_ACCESSS_DENIED
 mv ERR_ACCESSS_DENIED.1 ERR_ACCESSS_DENIED
 ```
 
-Buka file `restrict-sites.acl` dengan cara 
+Buka kembali konfigurasi `squid.conf` dengan mengetikkan `nano /etc/squid/squid.conf`. Ubah file konfigurasi squid menjadi seperti berikut ini. Untuk menambah situs sampel yang diblokir didalam squid.conf dengan menambahkan line 
 
 ```
-nano /etc/squid/restrict-sites.acl
+acl blek dstdomain ajk.if.its.ac.id
+http_access allow AW1 USERS !BLACKLISTS !blek
+http_access allow AW2 USERS !BLACKLISTS !blek
+http_access allow AW3 USERS !BLACKLISTS !blek
+http_access deny all
 ```
-
-Lalu tambahkan alamat url yang hendak diblok, contohnya dalam hal ini `elearning.if.its.ac.id` dan `tempo.co`. 
 
 ![38](https://user-images.githubusercontent.com/52096462/100542245-67df8480-327b-11eb-89b5-1ac7882118ed.PNG)
 
-Buka kembali konfigurasi `squid.conf` dengan mengetikkan `nano /etc/squid/squid.conf`. Ubah file konfigurasi squid menjadi seperti berikut ini.
 
-```
-http_port 8080
-visible_hostname mojokerto
 
-acl BLACKLISTS dstdomain "/etc/squid/restrict-sites.acl"
-http_access deny BLACKLISTS
-http_access allow all
-```
-
-Restart squid `service squid restart` dan jalankan alamat URL yang telah ditambahkan sebelumnya di file `restrict-sites.acl`.
+Restart squid `service squid restart` dan jalankan alamat URL yang telah ditambahkan sebelumnya diconfig yaitu `ajk.if.its.ac.id`.
 
 ![39dan40digabung](https://user-images.githubusercontent.com/52096462/100542246-68781b00-327b-11eb-9b47-36c6fc42bb87.PNG)
 
@@ -517,7 +515,7 @@ Ganti proxy pada *web browser* atau *OS* yang sebelumnya `10.151.77.27` menjadi 
 
 ![43](https://user-images.githubusercontent.com/52096462/100542251-6dd56580-327b-11eb-8f2b-388ddf2ccd7d.PNG)
 
-Lalu coba periksa proxy yang telah diubah tersebut, contohnya dengan mengakses *website* apapun, seperti `bing.com`
+Lalu coba periksa proxy yang telah diubah tersebut, contohnya dengan mengakses *website* apapun, seperti `yahoo.com`
 
 ![44](https://user-images.githubusercontent.com/52096462/100542253-6e6dfc00-327b-11eb-9980-f1cbb9c60fef.PNG)
 
